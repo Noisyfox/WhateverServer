@@ -6,6 +6,23 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          metadata-complete="false">
 
-         
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Whatever Management</web-resource-name>
+            <url-pattern>/management/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>manager</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>DIGEST</auth-method>
+        <realm-name>Whatever Management</realm-name>
+    </login-config>
+    <security-role>
+        <description>管理员</description>
+        <role-name>manager</role-name>
+    </security-role>
+
 </web-app>
 
