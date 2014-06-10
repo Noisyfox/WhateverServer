@@ -41,10 +41,8 @@ public class AdminSrv extends HttpServlet {
 
     private void handleMultipart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String filePath = UpdateManager.getUploadDirectory();
-        //文件最大容量 5M
-        int fileMaxSize = 5 * 1024 * 1024;
-        //存放文件描述
-        String[] fileDiscription = {null, null};
+        //文件最大容量 50M
+        int fileMaxSize = 50 * 1024 * 1024;
         //文件名
         String fileName;
         //重命名策略

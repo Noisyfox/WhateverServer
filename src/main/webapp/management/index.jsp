@@ -8,7 +8,11 @@
   Date: 6/9/2014
   Time: 11:31 PM
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"
+         pageEncoding="utf-8"%>
+<%
+    request.setCharacterEncoding("utf-8");
+%>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
