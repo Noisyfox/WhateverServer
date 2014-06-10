@@ -1,6 +1,7 @@
 <%@ page import="noisyfox.whatever.UpdateManager" %>
 <%@ page import="noisyfox.whatever.VersionData" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
 <%--
   Created by IntelliJ IDEA.
   User: Noisyfox
@@ -116,7 +117,17 @@
             <td><label><input type="file" name="fileName" id="fileName" value="Browse..."/></label></td>
         </tr>
     </table>
-    <input type = "submit" value = "新增版本">
+    <input type="submit" value="新增版本">
 </form>
+
+<br/><br/>
+<%
+    for (Map.Entry<String, String> ev : System.getenv().entrySet()) {
+%>
+<%=ev.getKey()%>:<%=ev.getValue()%>
+<br/>
+<%
+    }
+%>
 </body>
 </html>
