@@ -17,6 +17,7 @@ import java.util.Enumeration;
 @WebServlet("/management/AdminSrv")
 public class AdminSrv extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("utf-8");
         boolean isMultipart = Util.isMultipartContent(request);
 
         if (isMultipart) {
