@@ -81,30 +81,41 @@
         }
     %>
 </table>
-<a>添加新版本</a>
 <br/>
-<a>平台:</a>
-<label>
-<select name="os" id="os">
-    <option value="<%=VersionData.OS_ANDROID%>"><%=VersionData.OS[VersionData.OS_ANDROID]%></option>
-</select>
-</label>
 <br/>
-<a>版本号:</a>
-<label><input name="version" id="version"/></label>
-<br/>
-<a>显示版本:</a>
-<label><input name="versionName" id="versionName"/></label>
-<br/>
-<a>更新说明:</a>
-<label>
-<textarea name="versionDescription" id="versionDescription" rows="3" cols="20"></textarea>
-</label>
-<br/>
-<a>关键更新:</a>
-<label><input name="isCritical" id="isCritical" type="checkbox"></label>
-<br/>
-<a>选择文件:</a>
-<label><input type="file" name="fileName" id="fileName" value="Browse..." /></label>
+<table border="0">
+    <caption>添加新版本</caption>
+    <tr>
+        <td><a>平台:</a></td>
+        <td><label>
+            <select name="os" id="os">
+                <option value="<%=VersionData.OS_ANDROID%>"><%=VersionData.OS[VersionData.OS_ANDROID]%>
+                </option>
+            </select>
+        </label></td>
+    </tr>
+    <tr>
+        <td><a>版本号:</a></td>
+        <td><label><input name="version" id="version"/></label></td>
+    </tr>
+    <tr>
+        <td><a>显示版本:</a></td>
+        <td><label><input name="versionName" id="versionName"/></label></td>
+    </tr>
+    <tr>
+        <td><a>更新说明:</a></td>
+        <td><label>
+            <textarea name="versionDescription" id="versionDescription" rows="3" cols="20"></textarea>
+        </label></td>
+    </tr>
+    <tr>
+        <td><a>关键更新:</a></td>
+        <td><label><input name="isCritical" id="isCritical" type="checkbox"></label></td>
+    </tr>
+    <tr>
+        <td><a>选择文件:</a></td>
+        <td><label><input type="file" name="fileName" id="fileName" value="Browse..."/></label></td>
+    </tr>
+</table>
 </body>
 </html>
