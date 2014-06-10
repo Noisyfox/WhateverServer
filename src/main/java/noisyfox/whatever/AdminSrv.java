@@ -81,7 +81,7 @@ public class AdminSrv extends HttpServlet {
         String result = UpdateManager.addNewVersion(Integer.parseInt(os), Long.parseLong(version), versionName, versionDescription, !"0".equals(isCritical), fileName);
 
         if (result == null) {
-            msg(response.getWriter(), true, "添加成功" + versionDescription);
+            msg(response.getWriter(), true, "添加成功");
         } else {
             msg(response.getWriter(), false, result);
         }
