@@ -37,7 +37,7 @@ public class Util {
 
     public static Connection connectDB() {
         final String driver = "com.mysql.jdbc.Driver";
-        final String url = "jdbc:mysql://" + System.getenv("OPENSHIFT_MYSQL_DB_HOST") + ":" + System.getenv("OPENSHIFT_MYSQL_DB_PORT") + "/whatever";
+        final String url = "jdbc:mysql://" + System.getenv("OPENSHIFT_MYSQL_DB_HOST") + ":" + System.getenv("OPENSHIFT_MYSQL_DB_PORT") + "/whatever?useUnicode=true&characterEncoding=utf-8";
         final String user = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
         final String passwd = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
 
