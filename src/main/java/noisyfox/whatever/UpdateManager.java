@@ -84,7 +84,7 @@ public class UpdateManager {
     }
 
     public static String getUploadDirectory() {
-        String path = System.getenv("HOME");
+        String path = System.getenv("OPENSHIFT_DATA_DIR");
         File f = new File(path);
         f = new File(f, "whatever/update/");
         if (!f.exists()) {
