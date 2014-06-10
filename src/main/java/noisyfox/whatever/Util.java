@@ -1,5 +1,8 @@
 package noisyfox.whatever;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -52,5 +55,49 @@ public class Util {
         }
 
         return null;
+    }
+
+    public static boolean isMultipartContent(HttpServletRequest request){
+        String type = null;
+        String type1 = request.getHeader("Content-Type");
+        String type2 = request.getContentType();
+        // If one value is null, choose the other value
+        if (type1 == null && type2 != null) {
+            type = type2;
+        }
+        else if (type2 == null && type1 != null) {
+            type = type1;
+        }
+        // If neither value is null, choose the longer value
+        else if (type1 != null) {
+            type = (type1.length() > type2.length() ? type1 : type2);
+        }
+
+        if (type == null ||
+                !type.toLowerCase().startsWith("multipart/form-data")) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static String genJSON(boolean success, String message) {
+        String json = null;
+        try {
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("success", success);
+            jsonObj.put("message", message);
+            json = jsonObj.toString();
+        } catch (JSONException e) {
+            message = message.replace("\\", "\\\\");
+            String _json = "{\"success\":" + (success ? "true" : "false")
+                    + ",\"message\":\"" + message + "\"}";
+            try {
+                new JSONObject(_json);
+                json = _json;
+            } catch (JSONException ignored) {
+            }
+        }
+        return json;
     }
 }

@@ -1,5 +1,8 @@
 package noisyfox.whatever;
 
+import com.oreilly.servlet.multipart.FileRenamePolicy;
+
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,5 +81,23 @@ public class UpdateManager {
         ArrayList<VersionData> vd = new ArrayList<VersionData>();
         vd.addAll(mAllVersion);
         return vd;
+    }
+
+    public static String getUploadDirectory() {
+        String path = System.getenv("HOME");
+        File f = new File(path);
+        f = new File(f, "whatever/update/");
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+        return f.getAbsolutePath();
+    }
+
+    public static class TimestampFileRenamePolicy implements FileRenamePolicy {
+        @Override
+        public File rename(File file) {
+            file = new File(file.getParent(), System.currentTimeMillis() + "_" + file.getName());
+            return file;
+        }
     }
 }
