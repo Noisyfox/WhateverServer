@@ -28,10 +28,6 @@
                 });
             }
         }
-
-        function addUpdate() {
-
-        }
     </script>
 </head>
 <body>
@@ -83,39 +79,44 @@
 </table>
 <br/>
 <br/>
-<table border="0">
-    <caption>添加新版本</caption>
-    <tr>
-        <td><a>平台:</a></td>
-        <td><label>
-            <select name="os" id="os">
-                <option value="<%=VersionData.OS_ANDROID%>"><%=VersionData.OS[VersionData.OS_ANDROID]%>
-                </option>
-            </select>
-        </label></td>
-    </tr>
-    <tr>
-        <td><a>版本号:</a></td>
-        <td><label><input name="version" id="version"/></label></td>
-    </tr>
-    <tr>
-        <td><a>显示版本:</a></td>
-        <td><label><input name="versionName" id="versionName"/></label></td>
-    </tr>
-    <tr>
-        <td><a>更新说明:</a></td>
-        <td><label>
-            <textarea name="versionDescription" id="versionDescription" rows="3" cols="20"></textarea>
-        </label></td>
-    </tr>
-    <tr>
-        <td><a>关键更新:</a></td>
-        <td><label><input name="isCritical" id="isCritical" type="checkbox"></label></td>
-    </tr>
-    <tr>
-        <td><a>选择文件:</a></td>
-        <td><label><input type="file" name="fileName" id="fileName" value="Browse..."/></label></td>
-    </tr>
-</table>
+
+<form enctype="multipart/form-data" method="post" action="AdminSrv">
+    <input type="hidden" name="request" value="new"/>
+    <table border="0">
+        <caption>添加新版本</caption>
+        <tr>
+            <td><a>平台:</a></td>
+            <td><label>
+                <select name="os" id="os">
+                    <option value="<%=VersionData.OS_ANDROID%>"><%=VersionData.OS[VersionData.OS_ANDROID]%>
+                    </option>
+                </select>
+            </label></td>
+        </tr>
+        <tr>
+            <td><a>版本号:</a></td>
+            <td><label><input name="version" id="version"/></label></td>
+        </tr>
+        <tr>
+            <td><a>显示版本:</a></td>
+            <td><label><input name="versionName" id="versionName"/></label></td>
+        </tr>
+        <tr>
+            <td><a>更新说明:</a></td>
+            <td><label>
+                <textarea name="versionDescription" id="versionDescription" rows="3" cols="20"></textarea>
+            </label></td>
+        </tr>
+        <tr>
+            <td><a>关键更新:</a></td>
+            <td><label><input name="isCritical" id="isCritical" type="checkbox"></label></td>
+        </tr>
+        <tr>
+            <td><a>选择文件:</a></td>
+            <td><label><input type="file" name="fileName" id="fileName" value="Browse..."/></label></td>
+        </tr>
+    </table>
+    <input type = "submit" value = "新增版本">
+</form>
 </body>
 </html>

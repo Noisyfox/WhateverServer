@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Created by Noisyfox on 6/9/2014.
  */
-@WebServlet("/management/noisyfox.whatever.AdminSrv")
+@WebServlet("/management/AdminSrv")
 public class AdminSrv extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
