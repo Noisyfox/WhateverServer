@@ -1,6 +1,8 @@
 package noisyfox.whatever;
 
 import com.oreilly.servlet.multipart.FileRenamePolicy;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.sql.*;
@@ -38,7 +40,7 @@ public class UpdateManager {
         reload();
     }
 
-    private static synchronized void reload(){
+    private static synchronized void reload() {
         //init
         mAllVersion = new ArrayList<VersionData>();
         mNewestVersion = new VersionData[1];
@@ -125,7 +127,49 @@ public class UpdateManager {
         return null;
     }
 
-    public static synchronized void deleteVersion(long id){
+    private static synchronized List<VersionData> firstCheck(long currentVersion, int platform) {
+        if(!(platform >= 0 && platform < mNewestVersion.length && mNewestVersion[platform] != null && currentVersion < mNewestVersion[platform].version)){
+            return null;
+        }
+        List<VersionData> vds = getAllVersions();
+        vds.add(mNewestVersion[platform]);
+        return vds;
+    }
+
+    public static String checkUpdate(long currentVersion, int platform) {
+        List<VersionData> vds = firstCheck(currentVersion, platform);
+
+        if (vds != null) {
+            boolean mustUpdate = false;
+
+            for (VersionData vd : vds) {
+                if (vd.os == platform && vd.version > currentVersion && vd.isCritical) {
+                    mustUpdate = true;
+                    break;
+                }
+            }
+
+            VersionData nvd = vds.get(vds.size() - 1);
+
+            JSONObject jobj = new JSONObject();
+            try {
+                jobj.put("ErrorCode", 0);
+                jobj.put("n","1");
+                jobj.put("v", nvd.versionName);
+                jobj.put("vd", nvd.versionDescription);
+                jobj.put("f", mustUpdate ? "1" : "0");
+                jobj.put("t", nvd.updateTime);
+                return jobj.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return "{\"ErrorCode\":0, \"n\":\"0\"}";
+    }
+
+    public static synchronized void deleteVersion(long id) {
         Connection conn = Util.connectDB();
         try {
             PreparedStatement ps = conn.prepareStatement(SQL_DELETE_W_UPDATE);
@@ -150,4 +194,5 @@ public class UpdateManager {
             return file;
         }
     }
+
 }
