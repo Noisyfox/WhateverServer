@@ -32,6 +32,7 @@ public class UpdateManager {
     private static final String SQL_INSERT_NEW_W_UPDATE = "INSERT INTO  `whatever`.`" + SQL_TABLE_W_UPDATE + "` (" +
             "`id` ,`os` ,`version` ,`version_name` ,`update_time` ,`version_description` ,`is_critical` ,`is_delete` ,`file_name`)" +
             "VALUES (NULL ,  ?,  ?,  ?, CURRENT_TIMESTAMP ,  ?,  ?,  '0',  ?);";
+    private static final String SQL_DELETE_W_UPDATE = "DELETE FROM `" + SQL_TABLE_W_UPDATE + "` WHERE `id` = ?;";
 
     static {
         reload();
@@ -122,6 +123,24 @@ public class UpdateManager {
         }
         reload();
         return null;
+    }
+
+    public static synchronized void deleteVersion(long id){
+        Connection conn = Util.connectDB();
+        try {
+            PreparedStatement ps = conn.prepareStatement(SQL_DELETE_W_UPDATE);
+            ps.setLong(1, id);
+
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException ignored) {
+            }
+        }
+        reload();
     }
 
     public static class TimestampFileRenamePolicy implements FileRenamePolicy {

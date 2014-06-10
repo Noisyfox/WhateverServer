@@ -24,6 +24,16 @@ public class AdminSrv extends HttpServlet {
             handleMultipart(request, response);
             return;
         }
+
+        request.setCharacterEncoding("utf-8");
+        String request_t = request.getParameter("request");
+
+        if("delete".equals(request_t)){
+            String id = request.getParameter("id");
+            UpdateManager.deleteVersion(Long.parseLong(id));
+        } else {
+            msg(response.getWriter(), false, "Known request!");
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
