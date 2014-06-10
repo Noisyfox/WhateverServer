@@ -29,8 +29,15 @@ public class UpdateManager {
             "  PRIMARY KEY (`id`)" +
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
     private static final String SQL_QUERY_ALL_W_UPDATE = "SELECT * FROM `" + SQL_TABLE_W_UPDATE + "` WHERE `is_delete`=0;";
+    private static final String SQL_INSERT_NEW_W_UPDATE = "INSERT INTO  `whatever`.`" + SQL_TABLE_W_UPDATE + "` (" +
+            "`id` ,`os` ,`version` ,`version_name` ,`update_time` ,`version_description` ,`is_critical` ,`is_delete` ,`file_name`)" +
+            "VALUES (NULL ,  ?,  ?,  ?, CURRENT_TIMESTAMP ,  ?,  ?,  '0',  ?);";
 
     static {
+        reload();
+    }
+
+    private static synchronized void reload(){
         //init
         mAllVersion = new ArrayList<VersionData>();
         mNewestVersion = new VersionData[1];
@@ -74,7 +81,6 @@ public class UpdateManager {
             } catch (SQLException ignored) {
             }
         }
-
     }
 
     public static synchronized List<VersionData> getAllVersions() {
@@ -91,6 +97,31 @@ public class UpdateManager {
             f.mkdirs();
         }
         return f.getAbsolutePath();
+    }
+
+    public static synchronized String addNewVersion(int os, long version, String versionName, String versionDescription, boolean isCritical, String fileName) {
+        Connection conn = Util.connectDB();
+        try {
+            PreparedStatement ps = conn.prepareStatement(SQL_INSERT_NEW_W_UPDATE);
+            ps.setInt(1, os);
+            ps.setLong(2, version);
+            ps.setString(3, versionName);
+            ps.setString(4, versionDescription);
+            ps.setBoolean(5, isCritical);
+            ps.setString(6, fileName);
+
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return e.toString();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException ignored) {
+            }
+        }
+        reload();
+        return null;
     }
 
     public static class TimestampFileRenamePolicy implements FileRenamePolicy {

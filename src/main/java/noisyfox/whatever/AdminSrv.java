@@ -36,6 +36,7 @@ public class AdminSrv extends HttpServlet {
         } else {
             out.write("{\"success\":false,\"message\":\"Inner error!\"}");
         }
+        out.flush();
     }
 
     private void handleMultipart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,8 +47,6 @@ public class AdminSrv extends HttpServlet {
         String[] fileDiscription = {null, null};
         //文件名
         String fileName;
-        //上传文件数
-        int fileCount = 0;
         //重命名策略
         UpdateManager.TimestampFileRenamePolicy tfrp = new UpdateManager.TimestampFileRenamePolicy();
         //上传文件
@@ -56,7 +55,7 @@ public class AdminSrv extends HttpServlet {
         // 获取request类型
         String request_t = mulit.getParameter("request");
 
-        if(!"new".equals(request_t)){
+        if (!"new".equals(request_t)) {
             msg(response.getWriter(), false, "Known request!");
             return;
         }
@@ -68,14 +67,24 @@ public class AdminSrv extends HttpServlet {
         String isCritical = mulit.getParameter("isCritical");
 
         Enumeration filesName = mulit.getFileNames();
-        if(!filesName.hasMoreElements()){
+        if (!filesName.hasMoreElements()) {
             msg(response.getWriter(), false, "Must upload one file!");
             return;
         }
 
-        String name = (String)filesName.nextElement();
+        String name = (String) filesName.nextElement();
         fileName = mulit.getFilesystemName(name);
+        if (fileName == null) {
+            msg(response.getWriter(), false, "Must upload one file!");
+            return;
+        }
 
-        msg(response.getWriter(), false, fileName);
+        String result = UpdateManager.addNewVersion(Integer.parseInt(os), Long.parseLong(version), versionName, versionDescription, !"0".equals(isCritical), fileName);
+
+        if (result == null) {
+            msg(response.getWriter(), true, "添加成功");
+        } else {
+            msg(response.getWriter(), false, result);
+        }
     }
 }
