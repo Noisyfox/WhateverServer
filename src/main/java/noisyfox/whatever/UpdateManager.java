@@ -21,10 +21,11 @@ public class UpdateManager {
             "  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
             "  `version_description` TEXT NOT NULL," +
             "  `is_critical` TINYINT(1) NOT NULL DEFAULT '0'," +
+            "  `is_delete` TINYINT(1) NOT NULL DEFAULT '0'," +
             "  `file_name` TEXT NOT NULL," +
             "  PRIMARY KEY (`id`)" +
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
-    private static final String SQL_QUERY_ALL_W_UPDATE = "SELECT * FROM `" + SQL_TABLE_W_UPDATE + "`;";
+    private static final String SQL_QUERY_ALL_W_UPDATE = "SELECT * FROM `" + SQL_TABLE_W_UPDATE + "` WHERE `is_delete`=0;";
 
     static {
         //init

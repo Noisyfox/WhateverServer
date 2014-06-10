@@ -12,6 +12,27 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Whatever 管理</title>
+    <script type="text/javascript" src="../js/jquery-1.9.0.min.js"></script>
+    <script type="text/javascript">
+        function requestAdmin(request, callback) {
+            $.post("AdminSrv", request, callback);
+        }
+
+        function deleteUpdate(_id) {
+            if (confirm("确定删除这一条记录吗？")) {
+                requestAdmin({
+                    request: 'delete',
+                    id: _id
+                }, function (result) {
+                    window.location.reload();
+                });
+            }
+        }
+
+        function addUpdate() {
+
+        }
+    </script>
 </head>
 <body>
 <% List<VersionData> mAllVersions = UpdateManager.getAllVersions();%>
@@ -26,6 +47,7 @@
         <td>更新说明</td>
         <td>关键更新</td>
         <td>文件名</td>
+        <td></td>
     </tr>
     <%
         int count = 1;
@@ -48,12 +70,41 @@
         </td>
         <td><%=vd.fileName%>
         </td>
-        <td></td>
+        <td>
+            <button onclick="deleteUpdate(<%=vd.id%>)">
+                <strong>删除</strong>
+            </button>
+        </td>
     </tr>
     <%
             count++;
         }
     %>
 </table>
+<a>添加新版本</a>
+<br/>
+<a>平台:</a>
+<label>
+<select name="os" id="os">
+    <option value="<%=VersionData.OS_ANDROID%>"><%=VersionData.OS[VersionData.OS_ANDROID]%></option>
+</select>
+</label>
+<br/>
+<a>版本号:</a>
+<label><input name="version" id="version"/></label>
+<br/>
+<a>显示版本:</a>
+<label><input name="versionName" id="versionName"/></label>
+<br/>
+<a>更新说明:</a>
+<label>
+<textarea name="versionDescription" id="versionDescription" rows="3" cols="20"></textarea>
+</label>
+<br/>
+<a>关键更新:</a>
+<label><input name="isCritical" id="isCritical" type="checkbox"></label>
+<br/>
+<a>选择文件:</a>
+<label><input type="file" name="fileName" id="fileName" value="Browse..." /></label>
 </body>
 </html>
