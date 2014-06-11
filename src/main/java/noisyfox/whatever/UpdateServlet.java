@@ -53,11 +53,11 @@ public class UpdateServlet extends HttpServlet {
                 }
                 File f = new File(UpdateManager.getUploadDirectory(), file);
                 response.reset();
-                response.setContentType("application/x-download");
+                response.setContentType("application/x-msdownload");
                 String fileDownload = f.getAbsolutePath();
                 String fileDisplay = VersionData.FILE[os];
                 fileDisplay = URLEncoder.encode(fileDisplay, "UTF-8");
-                response.addHeader("Content-Disposition", "attachment;filename=" + fileDisplay);
+                response.setHeader("Content-Disposition", "attachment;filename=" + fileDisplay);
 
                 OutputStream out = null;
                 FileInputStream in = null;
@@ -78,11 +78,9 @@ public class UpdateServlet extends HttpServlet {
                 } finally {
                     if (in != null) {
                         in.close();
-                        in = null;
                     }
                     if (out != null) {
                         out.close();
-                        out = null;
                     }
                 }
             }
