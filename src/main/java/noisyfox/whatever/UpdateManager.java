@@ -166,7 +166,7 @@ public class UpdateManager {
                 jobj.put("vd", nvd.versionDescription);
                 jobj.put("f", mustUpdate ? "1" : "0");
                 jobj.put("t", nvd.updateTime);
-                jobj.put("s", nvd.fileSize);
+                jobj.put("s", String.valueOf(nvd.fileSize));
                 return jobj.toString();
             } catch (JSONException e) {
                 e.printStackTrace();
