@@ -162,7 +162,8 @@ public class UpdateManager {
             try {
                 jobj.put("ErrorCode", 0);
                 jobj.put("n", "1");
-                jobj.put("v", nvd.versionName);
+                jobj.put("v", String.valueOf(nvd.version));
+                jobj.put("vn", nvd.versionName);
                 jobj.put("vd", nvd.versionDescription);
                 jobj.put("f", mustUpdate ? "1" : "0");
                 jobj.put("t", nvd.updateTime);
