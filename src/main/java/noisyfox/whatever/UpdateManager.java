@@ -128,7 +128,7 @@ public class UpdateManager {
     }
 
     private static synchronized List<VersionData> firstCheck(long currentVersion, int platform) {
-        if(!(platform >= 0 && platform < mNewestVersion.length && mNewestVersion[platform] != null && currentVersion < mNewestVersion[platform].version)){
+        if (!(platform >= 0 && platform < mNewestVersion.length && mNewestVersion[platform] != null && currentVersion < mNewestVersion[platform].version)) {
             return null;
         }
         List<VersionData> vds = getAllVersions();
@@ -154,7 +154,7 @@ public class UpdateManager {
             JSONObject jobj = new JSONObject();
             try {
                 jobj.put("ErrorCode", 0);
-                jobj.put("n","1");
+                jobj.put("n", "1");
                 jobj.put("v", nvd.versionName);
                 jobj.put("vd", nvd.versionDescription);
                 jobj.put("f", mustUpdate ? "1" : "0");
@@ -185,6 +185,10 @@ public class UpdateManager {
             }
         }
         reload();
+    }
+
+    public static synchronized String getNewestFile(int platform) {
+        return (platform >= 0 && platform < mNewestVersion.length && mNewestVersion[platform] != null) ? mNewestVersion[platform].fileName : null;
     }
 
     public static class TimestampFileRenamePolicy implements FileRenamePolicy {

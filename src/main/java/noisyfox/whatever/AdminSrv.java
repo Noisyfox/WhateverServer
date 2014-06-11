@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Enumeration;
 
 /**
@@ -32,22 +31,12 @@ public class AdminSrv extends HttpServlet {
             String id = request.getParameter("id");
             UpdateManager.deleteVersion(Long.parseLong(id));
         } else {
-            msg(response.getWriter(), false, "Known request!");
+            Util.msg(response.getWriter(), false, "Known request!");
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
-    }
-
-    private void msg(PrintWriter out, boolean success, String message) {
-        String json = Util.genJSON(success, message);
-        if (json != null) {
-            out.write(json);
-        } else {
-            out.write("{\"success\":false,\"message\":\"Inner error!\"}");
-        }
-        out.flush();
     }
 
     private void handleMultipart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,7 +54,7 @@ public class AdminSrv extends HttpServlet {
         String request_t = mulit.getParameter("request");
 
         if (!"new".equals(request_t)) {
-            msg(response.getWriter(), false, "Known request!");
+            Util.msg(response.getWriter(), false, "Known request!");
             return;
         }
 
@@ -77,23 +66,23 @@ public class AdminSrv extends HttpServlet {
 
         Enumeration filesName = mulit.getFileNames();
         if (!filesName.hasMoreElements()) {
-            msg(response.getWriter(), false, "Must upload one file!");
+            Util.msg(response.getWriter(), false, "Must upload one file!");
             return;
         }
 
         String name = (String) filesName.nextElement();
         fileName = mulit.getFilesystemName(name);
         if (fileName == null) {
-            msg(response.getWriter(), false, "Must upload one file!");
+            Util.msg(response.getWriter(), false, "Must upload one file!");
             return;
         }
 
         String result = UpdateManager.addNewVersion(Integer.parseInt(os), Long.parseLong(version), versionName, versionDescription, !"0".equals(isCritical), fileName);
 
         if (result == null) {
-            msg(response.getWriter(), true, "添加成功");
+            Util.msg(response.getWriter(), true, "添加成功");
         } else {
-            msg(response.getWriter(), false, result);
+            Util.msg(response.getWriter(), false, result);
         }
     }
 }

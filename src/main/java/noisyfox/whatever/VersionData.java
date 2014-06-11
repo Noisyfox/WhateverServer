@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 public class VersionData {
     public static final int OS_ANDROID = 0;
     public static final String OS[] = {"Android"};
+    public static final String FILE[] = {"whatever.apk"};
     public int id;
     public int os;
     public long version;

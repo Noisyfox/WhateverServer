@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -99,5 +100,15 @@ public class Util {
             }
         }
         return json;
+    }
+
+    public static void msg(PrintWriter out, boolean success, String message) {
+        String json = Util.genJSON(success, message);
+        if (json != null) {
+            out.write(json);
+        } else {
+            out.write("{\"success\":false,\"message\":\"Inner error!\"}");
+        }
+        out.flush();
     }
 }
