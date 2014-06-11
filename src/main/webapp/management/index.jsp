@@ -48,6 +48,7 @@
         <td>更新说明</td>
         <td>关键更新</td>
         <td>文件名</td>
+        <td>文件大小</td>
         <td></td>
     </tr>
     <%
@@ -70,6 +71,8 @@
         <td><%=vd.isCritical ? "是" : "否"%>
         </td>
         <td><%=vd.fileName%>
+        </td>
+        <td><%=vd.fileSize%>
         </td>
         <td>
             <button onclick="deleteUpdate(<%=vd.id%>)">

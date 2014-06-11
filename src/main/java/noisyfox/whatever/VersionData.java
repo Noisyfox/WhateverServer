@@ -17,4 +17,5 @@ public class VersionData {
     public String versionDescription;
     public boolean isCritical;
     public String fileName;
+    public long fileSize;
 }

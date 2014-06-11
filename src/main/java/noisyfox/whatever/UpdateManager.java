@@ -28,12 +28,13 @@ public class UpdateManager {
             "  `is_critical` TINYINT(1) NOT NULL DEFAULT '0'," +
             "  `is_delete` TINYINT(1) NOT NULL DEFAULT '0'," +
             "  `file_name` TEXT NOT NULL," +
+            "  `file_size` INT(10) UNSIGNED NOT NULL DEFAULT '0'," +
             "  PRIMARY KEY (`id`)" +
             ") ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
     private static final String SQL_QUERY_ALL_W_UPDATE = "SELECT * FROM `" + SQL_TABLE_W_UPDATE + "` WHERE `is_delete`=0;";
     private static final String SQL_INSERT_NEW_W_UPDATE = "INSERT INTO  `whatever`.`" + SQL_TABLE_W_UPDATE + "` (" +
-            "`id` ,`os` ,`version` ,`version_name` ,`update_time` ,`version_description` ,`is_critical` ,`is_delete` ,`file_name`)" +
-            "VALUES (NULL ,  ?,  ?,  ?, CURRENT_TIMESTAMP ,  ?,  ?,  '0',  ?);";
+            "`id` ,`os` ,`version` ,`version_name` ,`update_time` ,`version_description` ,`is_critical` ,`is_delete` ,`file_name`, `file_size`)" +
+            "VALUES (NULL ,  ?,  ?,  ?, CURRENT_TIMESTAMP ,  ?,  ?,  '0',  ?,  ?);";
     private static final String SQL_DELETE_W_UPDATE = "UPDATE  `"+ SQL_TABLE_W_UPDATE + "` SET  `is_delete` =  '1' WHERE `id` = ?;";
 
     static {
@@ -61,6 +62,7 @@ public class UpdateManager {
                     String versionDescription = result.getString("version_description");
                     boolean isCritical = result.getBoolean("is_critical");
                     String fileName = result.getString("file_name");
+                    long fileSize = result.getLong("file_size");
 
                     VersionData vd = new VersionData();
                     vd.id = id;
@@ -71,6 +73,7 @@ public class UpdateManager {
                     vd.versionDescription = versionDescription;
                     vd.isCritical = isCritical;
                     vd.fileName = fileName;
+                    vd.fileSize = fileSize;
 
                     mNewestVersion[os] = vd;
                     mAllVersion.add(vd);
@@ -103,6 +106,9 @@ public class UpdateManager {
     }
 
     public static synchronized String addNewVersion(int os, long version, String versionName, String versionDescription, boolean isCritical, String fileName) {
+        File f = new File(getUploadDirectory(), fileName);
+        long fileSize = f.length();
+
         Connection conn = Util.connectDB();
         try {
             PreparedStatement ps = conn.prepareStatement(SQL_INSERT_NEW_W_UPDATE);
@@ -112,6 +118,7 @@ public class UpdateManager {
             ps.setString(4, versionDescription);
             ps.setBoolean(5, isCritical);
             ps.setString(6, fileName);
+            ps.setLong(7, fileSize);
 
             ps.execute();
         } catch (SQLException e) {
@@ -159,6 +166,7 @@ public class UpdateManager {
                 jobj.put("vd", nvd.versionDescription);
                 jobj.put("f", mustUpdate ? "1" : "0");
                 jobj.put("t", nvd.updateTime);
+                jobj.put("s", nvd.fileSize);
                 return jobj.toString();
             } catch (JSONException e) {
                 e.printStackTrace();
