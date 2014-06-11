@@ -80,7 +80,7 @@ public class AdminSrv extends HttpServlet {
         String result = UpdateManager.addNewVersion(Integer.parseInt(os), Long.parseLong(version), versionName, versionDescription, !"0".equals(isCritical), fileName);
 
         if (result == null) {
-            Util.msg(response.getWriter(), true, "添加成功");
+            Util.msg(response.getWriter(), true, "添加成功" + isCritical);
         } else {
             Util.msg(response.getWriter(), false, result);
         }
